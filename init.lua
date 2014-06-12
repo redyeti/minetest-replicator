@@ -10,6 +10,6 @@ pipeworks_plus = {}
 pipeworks_plus.modpath = minetest.get_modpath("pipeworks_plus")
 
 dofile(pipeworks_plus.modpath.."/crafts.lua")
-dofile(pipeworks_plus.modpath.."/reverse_autocrafter.lua")
+dofile(pipeworks_plus.modpath.."/replicator.lua")
 
 print("Pipeworks+ loaded!")
