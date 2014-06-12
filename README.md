@@ -7,6 +7,12 @@ The replicator is a device similar to the Autocrafter from [Pipeworks](http://va
 
 Just as the Autocrafter, the Replicator will use the world's recipes to automatically craft items. However, while the Autocrafter needs to be told the exact recipe, the Replicator just has to know what you want it to craft. It will then try all existing recipes to build the requested item.
 
+Recipe
+------
+	   Steel Ingot     Mese Crystal     Steel Ingot
+	Plastic Sheeting     Silicon      Plastic Sheeting
+	   Steel Ingot     Mese Crystal     Steel Ingot
+
 Usage
 -----
 
