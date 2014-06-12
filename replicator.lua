@@ -209,10 +209,10 @@ function Replicator:build_to_use_list(recipe)
 
 end
 
-minetest.register_node("pipeworks_plus:replicator", {
+minetest.register_node("replicator:replicator", {
 	description = "Replicator", 
 	drawtype = "normal", 
-	tiles = {"pipeworks_plus_replicator.png"}, 
+	tiles = {"replicator_replicator.png"}, 
 	groups = {snappy = 3, tubedevice = 1, tubedevice_receiver = 1}, 
 	tube = {insert_object = function(pos, node, stack, direction)
 			local meta = minetest.get_meta(pos)
@@ -254,7 +254,7 @@ minetest.register_node("pipeworks_plus:replicator", {
 	end
 })
 
-minetest.register_abm({nodenames = {"pipeworks_plus:replicator"}, interval = 1, chance = 1, 
+minetest.register_abm({nodenames = {"replicator:replicator"}, interval = 1, chance = 1, 
 			action = function(pos, node)
 				local meta = minetest.get_meta(pos)
 				local inv = meta:get_inventory()

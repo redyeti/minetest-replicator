@@ -6,10 +6,10 @@
 -- License: WTFPL
 --
 
-pipeworks_plus = {}
-pipeworks_plus.modpath = minetest.get_modpath("pipeworks_plus")
+replicator = {}
+replicator.modpath = minetest.get_modpath("replicator")
 
-dofile(pipeworks_plus.modpath.."/crafts.lua")
-dofile(pipeworks_plus.modpath.."/replicator.lua")
+dofile(replicator.modpath.."/crafts.lua")
+dofile(replicator.modpath.."/replicator.lua")
 
-print("Pipeworks+ loaded!")
+print("Replicator loaded!")
