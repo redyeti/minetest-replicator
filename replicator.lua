@@ -30,8 +30,12 @@ end
 function Replicator:replicate()
 
 	self:init_cache()
-	self:craft()
-
+	print("recipes: "..dump(self.recipe_list))
+	for i = 1, 6 do
+		if self:craft(i) then
+			return
+		end
+	end
 end
 
 function Replicator:get_recipe_list(taskname)
@@ -63,23 +67,31 @@ function Replicator:get_recipe_list(taskname)
 	return recipe_list
 end
 
+function Replicator:get_all_recipe_lists()
+	local r = {}
+	for i = 1, 6 do
+		local taskname = self.task[i]:get_name()
+		r[i] = self:get_recipe_list(taskname)
+	end
+	return r
+end
 
 function Replicator:init_cache()
 	if replicatorCache[minetest.hash_node_position(self.pos)] == nil then
 		self.task_last = {}
-		for i = 1, 1 do
+		for i = 1, 6 do
 			self.task_last[i] = self.task[i]
 			self.task[i] = ItemStack({name = self.task[i]:get_name(), count = 1})
 		end
 
-		self.recipe_list = self:get_recipe_list(self.task[1]:get_name())
+		self.recipe_list = self:get_all_recipe_lists()
 		replicatorCache[minetest.hash_node_position(self.pos)] = {["task"] = self.task, ["recipe_list"] = self.recipe_list}
 	else
 		local replicatorCacheEntry = replicatorCache[minetest.hash_node_position(self.pos)]
 		self.task_last = replicatorCacheEntry["task"]
 		self.recipe_list = replicatorCacheEntry["recipe_list"]
 		local taskUnchanged = true
-		for i = 1, 1 do
+		for i = 1, 6 do
 			if self.task[i]:get_name() ~= self.task_last[i]:get_name() then
 				taskUnchanged = false
 				break
@@ -91,32 +103,32 @@ function Replicator:init_cache()
 		end
 		if taskUnchanged then
 		else
-			for i = 1, 1 do
+			for i = 1, 6 do
 					self.task_last[i] = self.task[i]
 					self.task[i] = ItemStack({name = self.task[i]:get_name(), count = 1})
 			end
 
-	                self.recipe_list = self:get_recipe_list(self.task[1]:get_name())
+	                self.recipe_list = self:get_all_recipe_lists()
 			replicatorCache[minetest.hash_node_position(self.pos)] = {["task"] = self.task, ["recipe_list"] = self.recipe_list}
 		end
 	end
 end
 
-function Replicator:craft()
+function Replicator:craft(num)
 	local recipe
 
-	if self.recipe_list == nil then
-		return
+	if self.recipe_list[num] == nil then
+		return false
 	end
 
 	-- try all recipes
-	for _, recipe in ipairs(self.recipe_list)
+	for _, recipe in ipairs(self.recipe_list[num])
 	do
 
 		-- only execute normal recipes
 		if recipe.type == 'normal' then
 
-			local result = self.task[1]:get_name() .. " " .. recipe.count
+			local result = self.task[num]:get_name() .. " " .. recipe.count
 
 			-- check for free room
 			if not self.inventory:room_for_item("dst", result) then return end
@@ -148,10 +160,11 @@ function Replicator:craft()
 				end
 				self.inventory:add_item("dst", result)
 
-				return
+				return true
 			end
 		end
 	end
+	return false
 end
 
 function Replicator:add_to_use(to_use, item)
@@ -231,14 +244,14 @@ minetest.register_node("pipeworks_plus:replicator", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
 				"size[8,11]"..
-				"list[current_name;task;0,0;1,1;]"..
+				"list[current_name;task;0,0;2,3;]"..
 				"list[current_name;src;0,3.5;8,3;]"..
 				"list[current_name;dst;4,0;4,3;]"..
 				"list[current_player;main;0,7;8,4;]")
-		meta:set_string("infotext", "Reverse Autocrafter")
+		meta:set_string("infotext", "Replicator")
 		local inv = meta:get_inventory()
 		inv:set_size("src", 3*8)
-		inv:set_size("task", 1*1)
+		inv:set_size("task", 2*3)
 		inv:set_size("dst", 4*3)
 	end, 
 	can_dig = function(pos, player)
