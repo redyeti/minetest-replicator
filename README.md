@@ -1,7 +1,7 @@
 Replicator
 ==========
 
-![Replicator](/../doc/sceens/replicator.png?raw=true)
+![Replicator](/../doc/screens/replicator.png?raw=true)
 
 The replicator is a device similar to the Autocrafter from [Pipeworks](http://vanessae.github.io/pipeworks/). (Actually, its code is based on it.)
 
@@ -12,7 +12,7 @@ Usage
 
 Right clicking a Replicator brings up a menu:
 
-![Menu](/../doc/sceens/menu.png?raw=true)
+![Menu](/../doc/screens/menu.png?raw=true)
 
 The slots in the top left of the form are your task definition: The items you put here will be replicated. 
 
@@ -33,4 +33,4 @@ The Replicators main advantage over the Autocrafter is the fact that you don't h
 
 Let's say, you want to craft sticks from wood or junglewood. To craft your sticks with Autocrafters, you would need two Autocrafters, one for the wood recipe and one for the junglewood recipe, and probably some sorting tubes etc. Crafting yours sticks with Replicators is much easier: You need only one Replicator, tell it that you want sticks and supply it with any kind of wood. 
 
-![Pipeworks](/../doc/sceens/pipeworks.png?raw=true)
+![Pipeworks](/../doc/screens/pipeworks.png?raw=true)
