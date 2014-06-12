@@ -30,7 +30,6 @@ end
 function Replicator:replicate()
 
 	self:init_cache()
-	print("recipes: "..dump(self.recipe_list))
 	for i = 1, 6 do
 		if self:craft(i) then
 			return
@@ -39,12 +38,9 @@ function Replicator:replicate()
 end
 
 function Replicator:get_recipe_list(taskname)
-	print("getting recipe list")
 	if taskname == nil or taskname == "" then
 		return {}
 	end
-
-	print("taskname: "..dump(taskname))
 
 	local recipe_list = minetest.get_all_craft_recipes(taskname)
 	if recipe_list == nil then
@@ -61,7 +57,6 @@ function Replicator:get_recipe_list(taskname)
 			else
 				recipe_list[i].count = string.sub(recipe.output, string.find(recipe.output," %d+")) + 0
 			end
-			print(i.." - "..dump(recipe))
 		end
 	end
 	return recipe_list
@@ -135,19 +130,16 @@ function Replicator:craft(num)
 
 			-- find out which items to use
 			local to_use = self:build_to_use_list(recipe)
-			print("to_use: "..dump(to_use))
 
 			-- check if we're able to replicate using this recipe
 			local can_build = true
 			for itemname, number in pairs(to_use) do
-				print("checking item "..dump(itemname).."... ")
 				if (not self.invcache[itemname]) or self.invcache[itemname] < number then
 					can_build = false
 					break
 				end
 			end
 
-			print()
 
 			-- actually replicate and return
 			if can_build then
@@ -155,7 +147,6 @@ function Replicator:craft(num)
 				for itemname, number in pairs(to_use) do
 					for i = 1, number do -- We have to do that since remove_item does not work if count > stack_max
 						self.inventory:remove_item("src", ItemStack(itemname))
-						print("removing "..itemname.." from  stack")
 					end
 				end
 				self.inventory:add_item("dst", result)
@@ -187,24 +178,19 @@ function Replicator:build_to_use_list(recipe)
 			-- group in inv, substitute the group by a matching
 			-- element if possible
 
-			print("group")
 			local group_match = false
 			local groupname = string.sub(item, 7)
 
 			-- check all elements in inv for a match
 			for i, _ in pairs(self.invcache) do
 				if i ~= nil and i ~= "" then
-					print ("... "..i)
 					local groupval = minetest.get_item_group(i, groupname)
 					if groupval ~= nil and groupval > 0 then
 						-- yey, element matched
-						print(i.." is a "..groupname)
 
 						self:add_to_use(to_use, i)
 						group_match = true
 						break
-					else
-						print(i.." is no "..groupname)
 					end
 				end
 			end
